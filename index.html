@@ -1,0 +1,1183 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mapa de Riesgos Antisoborno — IPLACEX | ISO 37001:2025</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ── PASSWORD SCREEN ─────────────────────────────────────────────────────── */
+#lock-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: #0B1F3A;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0;
+}
+.lock-card {
+  background: #0F2847;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 18px;
+  padding: 3rem 3.5rem;
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.5);
+}
+.lock-logo {
+  background: #1A4F8A;
+  color: #fff;
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 7px 18px;
+  border-radius: 8px;
+  letter-spacing: 0.08em;
+  margin-bottom: 1.75rem;
+}
+.lock-icon {
+  width: 52px;
+  height: 52px;
+  background: rgba(59,130,196,0.15);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.25rem;
+}
+.lock-icon svg { width: 24px; height: 24px; stroke: #3B82C4; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.lock-title {
+  font-size: 17px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 4px;
+  letter-spacing: -0.01em;
+  text-align: center;
+}
+.lock-sub {
+  font-size: 12px;
+  color: #7BA8CC;
+  text-align: center;
+  margin-bottom: 2rem;
+  font-weight: 300;
+  line-height: 1.6;
+}
+.lock-input-wrap {
+  position: relative;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+.lock-input {
+  width: 100%;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 10px;
+  padding: 13px 46px 13px 16px;
+  font-size: 15px;
+  font-family: 'DM Mono', monospace;
+  color: #fff;
+  letter-spacing: 0.08em;
+  outline: none;
+  transition: border-color 0.2s, background 0.2s;
+  box-sizing: border-box;
+}
+.lock-input::placeholder { color: rgba(255,255,255,0.25); letter-spacing: 0.04em; font-family: 'DM Sans', sans-serif; }
+.lock-input:focus { border-color: #3B82C4; background: rgba(59,130,196,0.08); }
+.lock-input.error { border-color: #C0392B; animation: shake 0.35s ease; }
+.lock-toggle {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  color: rgba(255,255,255,0.35);
+  transition: color 0.15s;
+  line-height: 0;
+}
+.lock-toggle:hover { color: rgba(255,255,255,0.7); }
+.lock-toggle svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.lock-btn {
+  width: 100%;
+  background: #1A4F8A;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 13px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  letter-spacing: 0.03em;
+  transition: background 0.2s, transform 0.1s;
+  font-family: 'DM Sans', sans-serif;
+}
+.lock-btn:hover { background: #2563A8; }
+.lock-btn:active { transform: scale(0.98); }
+.lock-error {
+  margin-top: 10px;
+  font-size: 12px;
+  color: #E8847A;
+  text-align: center;
+  min-height: 18px;
+  font-weight: 400;
+}
+.lock-footer {
+  margin-top: 2rem;
+  font-size: 10px;
+  color: rgba(255,255,255,0.2);
+  text-align: center;
+  letter-spacing: 0.04em;
+  line-height: 1.8;
+}
+@keyframes shake {
+  0%,100%{ transform: translateX(0); }
+  20%    { transform: translateX(-8px); }
+  40%    { transform: translateX(8px); }
+  60%    { transform: translateX(-5px); }
+  80%    { transform: translateX(5px); }
+}
+@keyframes unlockFade {
+  from { opacity:1; transform: scale(1); }
+  to   { opacity:0; transform: scale(1.04); pointer-events: none; }
+}
+.lock-screen-exit { animation: unlockFade 0.4s ease forwards; }
+#main-content { display: none; }
+
+:root {
+  --navy:    #0B1F3A;
+  --blue:    #1A4F8A;
+  --blue-m:  #2563A8;
+  --blue-l:  #3B82C4;
+  --sky:     #E8F2FC;
+  --sky2:    #D0E6F8;
+  --sky3:    #B8D8F4;
+  --white:   #FFFFFF;
+  --off:     #F4F8FD;
+  --text:    #0B1F3A;
+  --muted:   #5A738F;
+  --border:  #C6DBEF;
+
+  --alto:    #C0392B;
+  --alto-l:  #FDECEA;
+  --medio:   #D4770A;
+  --medio-l: #FEF4E6;
+  --bajo:    #1A7A4A;
+  --bajo-l:  #E6F6ED;
+
+  --r: 8px;
+  --r-lg: 14px;
+  --shadow: 0 2px 12px rgba(11,31,58,0.08);
+  --shadow-lg: 0 8px 32px rgba(11,31,58,0.12);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--off);
+  color: var(--text);
+  min-height: 100vh;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* ── HEADER ─────────────────────────────────────────────────────────────── */
+.page-header {
+  background: var(--navy);
+  padding: 0 2.5rem;
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  min-height: 72px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 20px rgba(0,0,0,0.2);
+}
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 0;
+}
+.brand-badge {
+  background: var(--blue-m);
+  color: var(--white);
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 6px 14px;
+  border-radius: 6px;
+  letter-spacing: 0.05em;
+}
+.brand-name {
+  color: var(--white);
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.brand-sub {
+  color: var(--sky3);
+  font-size: 12px;
+  font-weight: 300;
+  margin-top: 1px;
+}
+.header-meta {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  padding: 1rem 0;
+}
+.meta-item {
+  text-align: right;
+}
+.meta-label {
+  color: var(--sky3);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 400;
+}
+.meta-val {
+  color: var(--white);
+  font-size: 13px;
+  font-weight: 500;
+  margin-top: 1px;
+}
+.norm-pill {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: var(--white);
+  font-size: 12px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+}
+
+/* ── MAIN LAYOUT ─────────────────────────────────────────────────────────── */
+.main {
+  max-width: 1380px;
+  margin: 0 auto;
+  padding: 2rem 2.5rem 3rem;
+}
+
+/* ── SECTION TITLE ────────────────────────────────────────────────────────── */
+.section-head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 1rem;
+}
+.section-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--blue-m);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  background: var(--sky2);
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+.section-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--navy);
+  letter-spacing: -0.01em;
+}
+
+/* ── KPI ROW ─────────────────────────────────────────────────────────────── */
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+.kpi-card {
+  background: var(--white);
+  border-radius: var(--r-lg);
+  padding: 1.25rem 1.5rem;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+  animation: fadeUp 0.4s ease both;
+}
+.kpi-card:nth-child(1) { animation-delay: 0.05s; }
+.kpi-card:nth-child(2) { animation-delay: 0.10s; }
+.kpi-card:nth-child(3) { animation-delay: 0.15s; }
+.kpi-card:nth-child(4) { animation-delay: 0.20s; }
+.kpi-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  border-radius: var(--r-lg) var(--r-lg) 0 0;
+}
+.kpi-card.total::before  { background: var(--blue-m); }
+.kpi-card.alto::before   { background: var(--alto); }
+.kpi-card.medio::before  { background: var(--medio); }
+.kpi-card.bajo::before   { background: var(--bajo); }
+.kpi-label {
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+.kpi-val {
+  font-size: 36px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+.kpi-card.total  .kpi-val { color: var(--blue); }
+.kpi-card.alto   .kpi-val { color: var(--alto); }
+.kpi-card.medio  .kpi-val { color: var(--medio); }
+.kpi-card.bajo   .kpi-val { color: var(--bajo); }
+.kpi-desc {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 4px;
+}
+.kpi-zone {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 999px;
+  margin-top: 8px;
+  letter-spacing: 0.04em;
+}
+.kpi-card.total  .kpi-zone { background: var(--sky); color: var(--blue); }
+.kpi-card.alto   .kpi-zone { background: var(--alto-l); color: var(--alto); }
+.kpi-card.medio  .kpi-zone { background: var(--medio-l); color: var(--medio); }
+.kpi-card.bajo   .kpi-zone { background: var(--bajo-l); color: var(--bajo); }
+
+/* ── TWO-COL LAYOUT ──────────────────────────────────────────────────────── */
+.two-col {
+  display: grid;
+  grid-template-columns: 520px 1fr;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+  animation: fadeUp 0.4s 0.25s ease both;
+}
+
+/* ── HEATMAP CARD ────────────────────────────────────────────────────────── */
+.card {
+  background: var(--white);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+.card-header {
+  background: var(--navy);
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.card-header-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--white);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.card-header-sub {
+  font-size: 11px;
+  color: var(--sky3);
+  font-weight: 300;
+}
+.card-body {
+  padding: 1.25rem;
+}
+
+/* ── HEATMAP TABLE ───────────────────────────────────────────────────────── */
+.heatmap-wrap {
+  overflow-x: auto;
+}
+.heatmap-container {
+  display: grid;
+  grid-template-columns: 80px repeat(5, 1fr) 36px;
+  gap: 4px;
+  min-width: 380px;
+}
+.hmap-axis-corner {
+  background: var(--navy);
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  font-size: 9.5px;
+  color: var(--sky3);
+  font-weight: 400;
+  line-height: 1.4;
+  text-align: center;
+}
+.hmap-col-hdr {
+  background: var(--navy);
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 4px;
+  font-size: 11px;
+  color: var(--white);
+  font-weight: 600;
+  text-align: center;
+  line-height: 1.2;
+}
+.hmap-col-hdr span { font-size: 9px; font-weight: 300; color: var(--sky3); display: block; }
+.hmap-row-hdr {
+  background: var(--navy);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 4px 8px;
+  font-size: 10px;
+  color: var(--white);
+  font-weight: 500;
+  text-align: right;
+  line-height: 1.3;
+  gap: 6px;
+}
+.hmap-pnum {
+  font-family: 'DM Mono', monospace;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--sky3);
+}
+.hmap-row-hdr span { font-size: 9px; color: var(--sky3); font-weight: 300; }
+.hmap-count {
+  background: var(--sky);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--blue);
+}
+.hmap-cell {
+  border-radius: 7px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 6px 4px;
+  min-height: 64px;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+  position: relative;
+}
+.hmap-cell:hover {
+  transform: scale(1.04);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  z-index: 10;
+}
+.hmap-cell.zone-alto   { background: #C0392B; }
+.hmap-cell.zone-medio  { background: #D07520; }
+.hmap-cell.zone-bajo   { background: #1A7A4A; }
+.hmap-cell.zone-empty  { background: var(--sky); border: 1px dashed var(--border); }
+.risk-chip {
+  background: rgba(255,255,255,0.22);
+  color: #fff;
+  font-family: 'DM Mono', monospace;
+  font-size: 8.5px;
+  font-weight: 500;
+  padding: 2px 5px;
+  border-radius: 4px;
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+  transition: background 0.12s;
+}
+.risk-chip:hover { background: rgba(255,255,255,0.38); }
+.hmap-cell.zone-empty .risk-chip { display: none; }
+.score-badge {
+  font-family: 'DM Mono', monospace;
+  font-size: 8px;
+  color: rgba(255,255,255,0.55);
+  font-weight: 400;
+  margin-top: 1px;
+}
+
+/* ── HEATMAP LEGEND ──────────────────────────────────────────────────────── */
+.hmap-legend {
+  display: flex;
+  gap: 12px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+.leg-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--muted);
+}
+.leg-dot {
+  width: 10px; height: 10px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+.leg-dot.alto  { background: #C0392B; }
+.leg-dot.medio { background: #D07520; }
+.leg-dot.bajo  { background: #1A7A4A; }
+
+/* ── AXIS LABELS ──────────────────────────────────────────────────────────── */
+.axis-labels {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  margin-top: 6px;
+  padding-left: 84px;
+  padding-right: 40px;
+}
+.axis-lbl {
+  flex: 1;
+  text-align: center;
+  font-size: 9px;
+  color: var(--muted);
+  font-weight: 400;
+}
+.axis-title {
+  font-size: 10px;
+  color: var(--blue);
+  font-weight: 600;
+  text-align: center;
+  margin-top: 4px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* ── INVENTORY TABLE ─────────────────────────────────────────────────────── */
+.inv-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+.inv-table thead tr {
+  background: var(--navy);
+}
+.inv-table thead th {
+  color: var(--sky3);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 9px 10px;
+  text-align: left;
+  white-space: nowrap;
+}
+.inv-table thead th:first-child { border-radius: 0; }
+.inv-table tbody tr {
+  border-bottom: 1px solid var(--sky);
+  transition: background 0.1s;
+}
+.inv-table tbody tr:hover { background: var(--sky); }
+.inv-table tbody tr.amb-a  { background: #F0F7FF; }
+.inv-table tbody tr.amb-a:hover  { background: #DBECFb; }
+.inv-table tbody tr.amb-c  { background: #F5FAEE; }
+.inv-table tbody tr.amb-c:hover  { background: #E4F3D5; }
+.inv-table tbody tr.amb-d  { background: #FFF5F0; }
+.inv-table tbody tr.amb-d:hover  { background: #FCDECE; }
+.inv-table tbody tr.amb-e  { background: #FFFBF0; }
+.inv-table tbody tr.amb-e:hover  { background: #FDF0CA; }
+.inv-table tbody tr.amb-g  { background: #F0F7FF; }
+.inv-table tbody tr.amb-g:hover  { background: #DBECFb; }
+.inv-table tbody tr.amb-h  { background: #F5FAF5; }
+.inv-table tbody tr.amb-h:hover  { background: #E0F0E0; }
+.inv-table tbody tr.amb-i  { background: #FAF5FF; }
+.inv-table tbody tr.amb-i:hover  { background: #EDDBFD; }
+.inv-table tbody tr.amb-l  { background: #FFF8F0; }
+.inv-table tbody tr.amb-l:hover  { background: #FDEBD0; }
+
+.inv-table td { padding: 7px 10px; vertical-align: middle; }
+.num-cell {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--blue);
+  white-space: nowrap;
+}
+.amb-pill {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 999px;
+  white-space: nowrap;
+  letter-spacing: 0.03em;
+}
+.amb-pill.A { background: #DBEAFE; color: #1D4ED8; }
+.amb-pill.C { background: #DCFCE7; color: #15803D; }
+.amb-pill.D { background: #FFE4E6; color: #BE123C; }
+.amb-pill.E { background: #FEF9C3; color: #A16207; }
+.amb-pill.G { background: #E0E7FF; color: #3730A3; }
+.amb-pill.H { background: #D1FAE5; color: #065F46; }
+.amb-pill.I { background: #F3E8FF; color: #6B21A8; }
+.amb-pill.L { background: #FFEDD5; color: #9A3412; }
+
+.desc-cell { color: var(--text); max-width: 240px; }
+.num-val {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+}
+.score-cell {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  font-weight: 700;
+  text-align: center;
+  padding: 4px 8px;
+  border-radius: 5px;
+  white-space: nowrap;
+}
+.score-cell.alto  { background: #FDECEA; color: #C0392B; }
+.score-cell.medio { background: #FEF4E6; color: #D07520; }
+.score-cell.bajo  { background: #E6F6ED; color: #1A7A4A; }
+.zone-badge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 999px;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+.zone-badge.alto  { background: #C0392B; color: #fff; }
+.zone-badge.medio { background: #D07520; color: #fff; }
+.zone-badge.bajo  { background: #1A7A4A; color: #fff; }
+.efec-badge {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.efec-badge.alta  { background: #D1FAE5; color: #065F46; }
+.efec-badge.media { background: #FEF4E6; color: #D07520; }
+.rfin-badge {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: #DBEAFE;
+  color: #1D4ED8;
+  white-space: nowrap;
+}
+
+/* ── FOOTER ──────────────────────────────────────────────────────────────── */
+.page-footer {
+  background: var(--navy);
+  padding: 1.25rem 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.footer-note {
+  font-size: 11px;
+  color: var(--sky3);
+  font-weight: 300;
+  max-width: 600px;
+}
+.footer-stamp {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: rgba(255,255,255,0.4);
+  text-align: right;
+  line-height: 1.6;
+}
+
+/* ── ANIMATIONS ──────────────────────────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── TOOLTIP ─────────────────────────────────────────────────────────────── */
+.tooltip {
+  position: fixed;
+  background: var(--navy);
+  color: var(--white);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 12px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s;
+  z-index: 9999;
+  max-width: 280px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+  line-height: 1.5;
+}
+.tooltip.show { opacity: 1; }
+.tooltip-title { font-weight: 600; font-size: 13px; margin-bottom: 4px; color: var(--sky3); }
+
+/* ── DIVIDER ─────────────────────────────────────────────────────────────── */
+.divider { height: 1px; background: var(--border); margin: 1.5rem 0; }
+
+@media print {
+  .page-header { position: static; }
+  .hmap-cell { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+</style>
+</head>
+<body>
+
+<!-- ─── LOCK SCREEN ──────────────────────────────────────────────────────── -->
+<div id="lock-screen">
+  <div class="lock-card">
+    <div class="lock-logo">IPLACEX</div>
+    <div class="lock-icon">
+      <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+    </div>
+    <div class="lock-title">Acceso restringido</div>
+    <div class="lock-sub">Mapa de Riesgos Antisoborno · ISO 37001:2025<br>Auditoría externa — Documento confidencial</div>
+    <div class="lock-input-wrap">
+      <input class="lock-input" id="pwd-input" type="password" placeholder="Ingrese la clave de acceso" autocomplete="off" spellcheck="false">
+      <button class="lock-toggle" id="pwd-toggle" tabindex="-1" aria-label="Mostrar clave">
+        <svg id="eye-icon" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+      </button>
+    </div>
+    <button class="lock-btn" id="unlock-btn">Ingresar al documento</button>
+    <div class="lock-error" id="lock-error"></div>
+    <div class="lock-footer">
+      SISTEMA DE GESTIÓN ANTISOBORNO · DCIC<br>
+      Ley N.° 20.393 · ISO 37001:2025 · Abril 2026
+    </div>
+  </div>
+</div>
+
+<!-- ─── MAIN CONTENT ─────────────────────────────────────────────────────── -->
+<div id="main-content">
+
+<!-- ─── HEADER ──────────────────────────────────────────────────────────── -->
+<header class="page-header">
+  <div class="header-brand">
+    <div class="brand-badge">IPLACEX</div>
+    <div>
+      <div class="brand-name">Sistema de Gestión Antisoborno</div>
+      <div class="brand-sub">Dirección de Cumplimiento Institucional — DCIC</div>
+    </div>
+  </div>
+  <div class="header-meta">
+    <div class="meta-item">
+      <div class="meta-label">Documento</div>
+      <div class="meta-val">Mapa de Riesgos</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">Revisión</div>
+      <div class="meta-val">Abril 2026</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">Versión</div>
+      <div class="meta-val">2025 v1</div>
+    </div>
+    <div class="norm-pill">ISO 37001:2025 · Ley 20.393</div>
+  </div>
+</header>
+
+<!-- ─── MAIN ─────────────────────────────────────────────────────────────── -->
+<main class="main">
+
+  <!-- KPI ROW -->
+  <div class="kpi-row">
+    <div class="kpi-card total">
+      <div class="kpi-label">Total de riesgos evaluados</div>
+      <div class="kpi-val">35</div>
+      <div class="kpi-desc">Riesgo inherente · Matriz ISO 37001:2025</div>
+      <span class="kpi-zone">Matriz principal</span>
+    </div>
+    <div class="kpi-card alto">
+      <div class="kpi-label">Zona ALTO</div>
+      <div class="kpi-val">4</div>
+      <div class="kpi-desc">Valoración inherente ≥ 12 · Requieren acción prioritaria</div>
+      <span class="kpi-zone">Inaceptable</span>
+    </div>
+    <div class="kpi-card medio">
+      <div class="kpi-label">Zona MEDIO</div>
+      <div class="kpi-val">25</div>
+      <div class="kpi-desc">Valoración inherente 5–11 · Sujetos a control activo</div>
+      <span class="kpi-zone">Tolerable con controles</span>
+    </div>
+    <div class="kpi-card bajo">
+      <div class="kpi-label">Zona BAJO</div>
+      <div class="kpi-val">6</div>
+      <div class="kpi-desc">Valoración inherente 1–4 · Monitoreo rutinario</div>
+      <span class="kpi-zone">Aceptable</span>
+    </div>
+  </div>
+
+  <!-- HEATMAP + MINI-SUMMARY -->
+  <div class="two-col">
+
+    <!-- HEATMAP -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-header-title">Mapa de calor — Riesgo inherente</div>
+          <div class="card-header-sub">Probabilidad × Impacto · Escala 1–5</div>
+        </div>
+        <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--sky3);">P × I</div>
+      </div>
+      <div class="card-body">
+        <div class="heatmap-wrap">
+          <div class="heatmap-container" id="heatmap"></div>
+          <div class="axis-labels">
+            <div class="axis-lbl">1<br><span style="font-size:8px;color:#aaa">Bajo</span></div>
+            <div class="axis-lbl">2<br><span style="font-size:8px;color:#aaa">Menor</span></div>
+            <div class="axis-lbl">3<br><span style="font-size:8px;color:#aaa">Moderado</span></div>
+            <div class="axis-lbl">4<br><span style="font-size:8px;color:#aaa">Mayor</span></div>
+            <div class="axis-lbl">5<br><span style="font-size:8px;color:#aaa">Crítico</span></div>
+          </div>
+          <div class="axis-title">Impacto →</div>
+        </div>
+        <div class="hmap-legend">
+          <div class="leg-item"><div class="leg-dot alto"></div>ALTO (≥ 12)</div>
+          <div class="leg-item"><div class="leg-dot medio"></div>MEDIO (5–11)</div>
+          <div class="leg-item"><div class="leg-dot bajo"></div>BAJO (1–4)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ÁMBITO SUMMARY -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-header-title">Distribución por ámbito de riesgo</div>
+          <div class="card-header-sub">Riesgos agrupados por categoría ISO 37001:2025</div>
+        </div>
+      </div>
+      <div class="card-body" style="padding: 0.75rem 1.25rem;">
+        <div id="ambito-bars"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INVENTORY TABLE -->
+  <div class="card" style="animation: fadeUp 0.4s 0.35s ease both;">
+    <div class="card-header">
+      <div>
+        <div class="card-header-title">Inventario completo de riesgos — ISO 37001:2025</div>
+        <div class="card-header-sub">Valoración inherente · Estado de controles 2025 · Riesgo final</div>
+      </div>
+      <div style="font-size:11px;color:var(--sky3);font-family:'DM Mono',monospace;">35 riesgos</div>
+    </div>
+    <div style="overflow-x:auto;">
+      <table class="inv-table">
+        <thead>
+          <tr>
+            <th>N°</th>
+            <th>Ámbito</th>
+            <th>Descripción del riesgo</th>
+            <th style="text-align:center;">Prob.</th>
+            <th style="text-align:center;">Impacto</th>
+            <th style="text-align:center;">Val. Inherente</th>
+            <th style="text-align:center;">Zona inherente</th>
+            <th style="text-align:center;">Efectividad 2025</th>
+            <th style="text-align:center;">Riesgo final 2025</th>
+          </tr>
+        </thead>
+        <tbody id="risk-table-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- FOOTER NOTE -->
+  <div style="margin-top:1rem;padding:0.75rem 1rem;background:var(--sky);border-radius:var(--r);border:1px solid var(--border);font-size:11px;color:var(--muted);">
+    <strong style="color:var(--blue);">Nota metodológica:</strong>
+    La valoración inherente corresponde a la evaluación del riesgo sin considerar la efectividad de los controles existentes (Probabilidad × Impacto). Los valores de riesgo final 2025 reflejan la aplicación del ambiente de control vigente. Todos los riesgos presentan estado <em>Tolerable</em> al cierre del período evaluado. Fuente: Matriz de Riesgos SGAS — IPLACEX, abril 2026.
+  </div>
+
+</main>
+
+</div><!-- /main-content -->
+
+<!-- ─── FOOTER ────────────────────────────────────────────────────────────── -->
+<footer class="page-footer">
+  <div class="footer-note">
+    Documento de uso interno — Auditoría externa ISO 37001:2025. La información contenida es confidencial y de propiedad exclusiva de IPLACEX. Queda prohibida su reproducción sin autorización de la Dirección de Cumplimiento Institucional.
+  </div>
+  <div class="footer-stamp">
+    Sistema de Gestión Antisoborno<br>
+    ISO 37001:2025 · Ley N.° 20.393<br>
+    IPLACEX · Abril 2026
+  </div>
+</footer>
+
+<!-- ─── TOOLTIP ───────────────────────────────────────────────────────────── -->
+<div class="tooltip" id="tooltip">
+  <div class="tooltip-title" id="tt-title"></div>
+  <div id="tt-body"></div>
+</div>
+
+<script>
+const RISKS = [
+  {no:'1',  amb:'A', alab:'A – Func. Públicos',    desc:'Rel. habitual con autoridades (PEP)',            p:2,i:4,sc:8,  efec:'Alta', rfin:'Tolerable'},
+  {no:'2',  amb:'A', alab:'A – Func. Públicos',    desc:'Contingencia legal con func. público',           p:1,i:5,sc:5,  efec:'Alta', rfin:'Tolerable'},
+  {no:'3',  amb:'A', alab:'A – Func. Públicos',    desc:'Interacción con municipalidades/permisos',       p:3,i:3,sc:9,  efec:'Alta', rfin:'Tolerable'},
+  {no:'4',  amb:'A', alab:'A – Func. Públicos',    desc:'Rel. con DT / Inspección del Trabajo',           p:3,i:3,sc:9,  efec:'Alta', rfin:'Tolerable'},
+  {no:'6',  amb:'A', alab:'A – Func. Públicos',    desc:'Gestión de conflictos de interés',               p:3,i:3,sc:9,  efec:'Alta', rfin:'Tolerable'},
+  {no:'7',  amb:'C', alab:'C – Proveedores',       desc:'Proveedor sin política antisoborno',             p:3,i:3,sc:9,  efec:'Alta', rfin:'Tolerable'},
+  {no:'8',  amb:'C', alab:'C – Proveedores',       desc:'Proveedor con política, igual soborna',          p:3,i:3,sc:9,  efec:'Media',rfin:'Tolerable'},
+  {no:'9',  amb:'C', alab:'C – Proveedores',       desc:'Colaborador sin formación soborna a prov.',      p:3,i:4,sc:12, efec:'Alta', rfin:'Tolerable'},
+  {no:'10', amb:'C', alab:'C – Proveedores',       desc:'Colaborador con formación soborna a prov.',      p:3,i:3,sc:9,  efec:'Alta', rfin:'Tolerable'},
+  {no:'11', amb:'C', alab:'C – Proveedores',       desc:'Terceros ofrecen beneficios (DD insuf.)',        p:2,i:3,sc:6,  efec:'Alta', rfin:'Tolerable'},
+  {no:'12', amb:'C', alab:'C – Proveedores',       desc:'Beneficios de Isapre/AFP/cooperativas',          p:2,i:3,sc:6,  efec:'Alta', rfin:'Tolerable'},
+  {no:'14', amb:'C', alab:'C – Proveedores',       desc:'Compra sin DD / fuera de manual',                p:2,i:4,sc:8,  efec:'Alta', rfin:'Tolerable'},
+  {no:'15', amb:'D', alab:'D – Donaciones',        desc:'Contratación directa incumpliendo manual',       p:2,i:4,sc:8,  efec:'Alta', rfin:'Tolerable'},
+  {no:'16', amb:'D', alab:'D – Donaciones',        desc:'Beneficios por bienes dados de baja',            p:1,i:4,sc:4,  efec:'Alta', rfin:'Tolerable'},
+  {no:'17', amb:'E', alab:'E – Fondos',            desc:'Donaciones/auspicios sin DD beneficiario',       p:2,i:3,sc:6,  efec:'Alta', rfin:'Tolerable'},
+  {no:'21', amb:'E', alab:'E – Fondos',            desc:'Pagos a proveedores ficticios',                  p:2,i:3,sc:6,  efec:'Alta', rfin:'Tolerable'},
+  {no:'22', amb:'E', alab:'E – Fondos',            desc:'Uso indebido caja chica/tarjetas corp.',         p:4,i:1,sc:4,  efec:'Alta', rfin:'Tolerable'},
+  {no:'26', amb:'G', alab:'G – Est./Socios',       desc:'No declaración conflicto de interés',            p:3,i:5,sc:15, efec:'Alta', rfin:'Tolerable'},
+  {no:'27', amb:'G', alab:'G – Est./Socios',       desc:'Investigación interna deficiente',               p:4,i:3,sc:12, efec:'Alta', rfin:'Tolerable'},
+  {no:'28', amb:'G', alab:'G – Est./Socios',       desc:'Estudiante ofrece beneficio por matrícula',      p:2,i:3,sc:6,  efec:'Alta', rfin:'Tolerable'},
+  {no:'29', amb:'G', alab:'G – Est./Socios',       desc:'Colaborador facilita ilegalidades a alumno',     p:3,i:4,sc:12, efec:'Media',rfin:'Tolerable'},
+  {no:'31', amb:'G', alab:'G – Est./Socios',       desc:'Beneficios por servicios de apoyo al est.',      p:2,i:4,sc:8,  efec:'Alta', rfin:'Tolerable'},
+  {no:'33', amb:'G', alab:'G – Est./Socios',       desc:'Asignación irregular de becas/descuentos',       p:2,i:3,sc:6,  efec:'Alta', rfin:'Tolerable'},
+  {no:'34', amb:'G', alab:'G – Est./Socios',       desc:'Beneficios en convenios académicos',             p:1,i:4,sc:4,  efec:'Alta', rfin:'Tolerable'},
+  {no:'35', amb:'G', alab:'G – Est./Socios',       desc:'Contacto indebido colaborador-estudiante',       p:2,i:4,sc:8,  efec:'Alta', rfin:'Tolerable'},
+  {no:'36', amb:'G', alab:'G – Est./Socios',       desc:'Filtración de examen de título',                 p:1,i:4,sc:4,  efec:'Alta', rfin:'Tolerable'},
+  {no:'38', amb:'G', alab:'G – Est./Socios',       desc:'Falsificación de certificados/títulos',          p:2,i:5,sc:10, efec:'Alta', rfin:'Tolerable'},
+  {no:'39', amb:'H', alab:'H – Relac. Laborales',  desc:'Contratación con abuso laboral',                 p:2,i:2,sc:4,  efec:'Alta', rfin:'Tolerable'},
+  {no:'40', amb:'H', alab:'H – Relac. Laborales',  desc:'Bonos e incentivos a tutores (giftcard)',         p:3,i:2,sc:6,  efec:'Alta', rfin:'Tolerable'},
+  {no:'41', amb:'H', alab:'H – Relac. Laborales',  desc:'Tutores sobornan por filtrar evaluaciones',      p:3,i:2,sc:6,  efec:'Alta', rfin:'Tolerable'},
+  {no:'45', amb:'H', alab:'H – Relac. Laborales',  desc:'Contratación con info confidencial compet.',     p:2,i:3,sc:6,  efec:'Alta', rfin:'Tolerable'},
+  {no:'46', amb:'I', alab:'I – Salud/Seg.',         desc:'Construcción/remodelación sin DD',               p:3,i:1,sc:3,  efec:'Alta', rfin:'Tolerable'},
+  {no:'57', amb:'L', alab:'L – Prop. Intelectual',  desc:'Uso de propiedad intelectual protegida',         p:2,i:3,sc:6,  efec:'Alta', rfin:'Tolerable'},
+];
+
+// Build heatmap
+const hmap = {};
+RISKS.forEach(r => {
+  const k = `${r.p}-${r.i}`;
+  if (!hmap[k]) hmap[k] = [];
+  hmap[k].push(r);
+});
+
+function zone(sc) {
+  if (sc >= 12) return 'alto';
+  if (sc >= 5)  return 'medio';
+  return 'bajo';
+}
+
+function buildHeatmap() {
+  const el = document.getElementById('heatmap');
+  const colHdrs = ['corner','1','2','3','4','5','cnt'];
+  const colLabels = ['','Bajo','Menor','Mod.','Mayor','Crít.',''];
+
+  // Corner
+  const corner = document.createElement('div');
+  corner.className = 'hmap-axis-corner';
+  corner.innerHTML = 'PROB.<br>↓ &nbsp; IMP. →';
+  el.appendChild(corner);
+
+  // Col headers
+  for (let i = 1; i <= 5; i++) {
+    const h = document.createElement('div');
+    h.className = 'hmap-col-hdr';
+    h.innerHTML = `${i}<span>${colLabels[i]}</span>`;
+    el.appendChild(h);
+  }
+
+  // Count header
+  const ch = document.createElement('div');
+  ch.className = 'hmap-col-hdr';
+  ch.innerHTML = `#<span>total</span>`;
+  el.appendChild(ch);
+
+  const probLabels = ['','Muy Baja','Baja','Moderada','Alta','Muy Alta'];
+
+  // Rows P=5 down to P=1
+  for (let p = 5; p >= 1; p--) {
+    // Row header
+    const rh = document.createElement('div');
+    rh.className = 'hmap-row-hdr';
+    rh.innerHTML = `<div><div class="hmap-pnum">${p}</div><span>${probLabels[p]}</span></div>`;
+    el.appendChild(rh);
+
+    let rowCount = 0;
+    for (let i = 1; i <= 5; i++) {
+      const sc = p * i;
+      const z = zone(sc);
+      const cell = document.createElement('div');
+      const cellRisks = hmap[`${p}-${i}`] || [];
+      rowCount += cellRisks.length;
+
+      cell.className = `hmap-cell zone-${cellRisks.length ? z : 'empty'}`;
+
+      if (cellRisks.length) {
+        cellRisks.forEach(r => {
+          const chip = document.createElement('div');
+          chip.className = 'risk-chip';
+          chip.textContent = `R${r.no}`;
+          chip.dataset.risk = r.no;
+          cell.appendChild(chip);
+        });
+        const sb = document.createElement('div');
+        sb.className = 'score-badge';
+        sb.textContent = sc;
+        cell.appendChild(sb);
+      }
+
+      // Tooltip
+      cell.addEventListener('mouseenter', (e) => {
+        if (!cellRisks.length) return;
+        const tt = document.getElementById('tooltip');
+        const ttTitle = document.getElementById('tt-title');
+        const ttBody = document.getElementById('tt-body');
+        ttTitle.textContent = `P=${p} × I=${i} = ${sc} (${zone(sc).toUpperCase()})`;
+        ttBody.innerHTML = cellRisks.map(r =>
+          `<div style="margin-top:4px;padding-top:4px;border-top:1px solid rgba(255,255,255,0.1)">
+            <span style="font-family:'DM Mono',monospace;font-size:10px;color:#93C5FD;">R${r.no}</span>
+            <span style="font-size:11px;display:block;color:#E2E8F0;margin-top:1px;">${r.desc}</span>
+           </div>`
+        ).join('');
+        tt.classList.add('show');
+      });
+      cell.addEventListener('mousemove', (e) => {
+        const tt = document.getElementById('tooltip');
+        const x = e.clientX + 16, y = e.clientY - 10;
+        tt.style.left = Math.min(x, window.innerWidth - 300) + 'px';
+        tt.style.top = Math.max(y, 10) + 'px';
+      });
+      cell.addEventListener('mouseleave', () => {
+        document.getElementById('tooltip').classList.remove('show');
+      });
+
+      el.appendChild(cell);
+    }
+
+    // Count
+    const cnt = document.createElement('div');
+    cnt.className = 'hmap-count';
+    cnt.textContent = rowCount;
+    el.appendChild(cnt);
+  }
+}
+
+// Build ambito bars
+function buildAmbitoBars() {
+  const counts = {};
+  const labels = {};
+  RISKS.forEach(r => {
+    if (!counts[r.amb]) { counts[r.amb] = 0; labels[r.amb] = r.alab; }
+    counts[r.amb]++;
+  });
+
+  const AMB_COLORS = {
+    A:'#3B82F6', C:'#22C55E', D:'#F43F5E',
+    E:'#EAB308', G:'#6366F1', H:'#10B981',
+    I:'#A855F7', L:'#F97316'
+  };
+  const sorted = Object.entries(counts).sort((a,b) => b[1]-a[1]);
+  const max = sorted[0][1];
+
+  const el = document.getElementById('ambito-bars');
+  sorted.forEach(([amb, count]) => {
+    const pct = (count / max * 100).toFixed(0);
+    const alto_c = RISKS.filter(r => r.amb === amb && r.sc >= 12).length;
+    const row = document.createElement('div');
+    row.style.cssText = 'margin-bottom:10px;';
+    row.innerHTML = `
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+        <span style="font-size:11px;font-weight:600;color:var(--text);">${labels[amb]}</span>
+        <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);">${count} riesgo${count>1?'s':''}${alto_c?` · <span style="color:#C0392B;font-weight:700;">${alto_c} ALTO</span>`:''}</span>
+      </div>
+      <div style="background:var(--sky2);border-radius:999px;height:8px;overflow:hidden;">
+        <div style="width:${pct}%;height:100%;background:${AMB_COLORS[amb]};border-radius:999px;transition:width 0.8s ease;"></div>
+      </div>
+    `;
+    el.appendChild(row);
+  });
+}
+
+// Build inventory table
+function buildTable() {
+  const tbody = document.getElementById('risk-table-body');
+  RISKS.forEach(r => {
+    const z = zone(r.sc);
+    const zLabel = z === 'alto' ? 'ALTO' : z === 'medio' ? 'MEDIO' : 'BAJO';
+    const tr = document.createElement('tr');
+    tr.className = `amb-${r.amb.toLowerCase()}`;
+    tr.innerHTML = `
+      <td><span class="num-cell">R${r.no}</span></td>
+      <td><span class="amb-pill ${r.amb}">${r.alab}</span></td>
+      <td class="desc-cell">${r.desc}</td>
+      <td><div class="num-val">${r.p}</div></td>
+      <td><div class="num-val">${r.i}</div></td>
+      <td><div class="score-cell ${z}">${r.sc}</div></td>
+      <td style="text-align:center;"><span class="zone-badge ${z}">${zLabel}</span></td>
+      <td style="text-align:center;"><span class="efec-badge ${r.efec.toLowerCase()}">${r.efec}</span></td>
+      <td style="text-align:center;"><span class="rfin-badge">${r.rfin}</span></td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+buildHeatmap();
+buildAmbitoBars();
+buildTable();
+
+// ── PASSWORD LOGIC ────────────────────────────────────────────────────────
+(function() {
+  const PASS = 'IplaSPD2026';
+  const input  = document.getElementById('pwd-input');
+  const btn    = document.getElementById('unlock-btn');
+  const errEl  = document.getElementById('lock-error');
+  const toggle = document.getElementById('pwd-toggle');
+  const lock   = document.getElementById('lock-screen');
+  const main   = document.getElementById('main-content');
+
+  toggle.addEventListener('click', () => {
+    const isPass = input.type === 'password';
+    input.type = isPass ? 'text' : 'password';
+    document.getElementById('eye-icon').innerHTML = isPass
+      ? '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1=\"1\" y1=\"1\" x2=\"23\" y2=\"23\"/>'
+      : '<path d=\"M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z\"/><circle cx=\"12\" cy=\"12\" r=\"3\"/>';
+    input.focus();
+  });
+
+  function tryUnlock() {
+    if (input.value === PASS) {
+      errEl.textContent = '';
+      input.classList.remove('error');
+      lock.classList.add('lock-screen-exit');
+      setTimeout(() => {
+        lock.style.display = 'none';
+        main.style.display = 'block';
+      }, 380);
+    } else {
+      input.classList.add('error');
+      errEl.textContent = 'Clave incorrecta. Verifique e intente nuevamente.';
+      input.value = '';
+      setTimeout(() => input.classList.remove('error'), 600);
+      input.focus();
+    }
+  }
+
+  btn.addEventListener('click', tryUnlock);
+  input.addEventListener('keydown', e => { if (e.key === 'Enter') tryUnlock(); });
+  input.focus();
+})();
+</script>
+</body>
+</html>
